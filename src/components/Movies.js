@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
-import { PencilSquare, FileEarmarkRichtext, Trash } from 'react-bootstrap-icons'
-import { deleteMovie, getMovies } from '../services/movieService'
-import { getCurrentUser, isLogin } from '../services/authService'
+import { PencilSquare, FileEarmarkRichtext, Trash } from 'react-bootstrap-icons';
+import { deleteMovie, getMovies } from '../services/movieService';
+import { getCurrentUser, isLogin } from '../services/authService';
 import Table from './Table';
 import queryString from 'query-string';
 import Pagination from './Pagination';
 
 function Movies(props) {
-  const history = useHistory();
   const [moviesData, setMoviesData] = useState([])
   const [loading, setloading] = useState(0)
   const [sortColumn, setSortColumn] = useState({
@@ -54,10 +53,8 @@ function Movies(props) {
         setMoviesData(moviesData.filter(filterData => {
           return filterData._id !== id
         }))
-        console.log(response)
       }
     ).catch(error => {
-      console.log(error)
     })
   }
 
@@ -92,24 +89,26 @@ function Movies(props) {
                         <td>
                           {isLogin()
                             ? (< div className="dropdown">
-                              <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                               Edit
-                              </button>
-                              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                <Link to={`/movie/details/${movie._id}`}>
-                                </Link>
-                                <Link to={`/movies/${movie._id}`}>
-                                  <button className="dropdown-item" type="button"> <PencilSquare/> Update</button>
-                                </Link>
-                                {getCurrentUser().isAdmin ? <button class="dropdown-item btn btn-danger" onClick={() => handleDelete(movie._id)} type="button"><Trash/> Delete</button> : ''}
-                              </div>
-                            </div>) : (< div className="dropdown">
                               <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" 
                               aria-haspopup="true" aria-expanded="false"> Edit </button>
+
+                              <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <Link to={`/movies/details/${movie._id}`}> </Link>
+                                
+                                <Link to={`/movies/${movie._id}`}> <button className="dropdown-item" type="button"> <PencilSquare/> Update</button> </Link>
+                                
+                                {getCurrentUser().isAdmin ? <button class="dropdown-item btn btn-danger" 
+                                onClick={() => handleDelete(movie._id)} type="button"><Trash/> Delete</button> : ''}
+                              </div>
+                              </div>) 
+                              : (< div className="dropdown">
+                              <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" 
+                               aria-haspopup="true" aria-expanded="false"> Edit </button>
+                              
                               <div className="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                <Link to={`/movie/details/${movie._id}`}>
-                                  <button className="dropdown-item btn btn-success" type="button"><FileEarmarkRichtext /> View</button>
-                                </Link>
+                              <Link to={`/movies/details/${movie._id}`}>
+                               <button className="dropdown-item btn btn-success" type="button"><FileEarmarkRichtext/> View</button>
+                              </Link>
                               </div>
                             </div>)
                           }</td>
@@ -133,4 +132,4 @@ function Movies(props) {
   )
 }
 
-export default Movies
+export default Movies;

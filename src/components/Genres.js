@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
-import { Link, useHistory } from 'react-router-dom'
-import queryString from 'query-string'
-import { getGenres } from '../services/genreService'
-import { isLogin } from '../services/authService'
+import { Link, useHistory } from 'react-router-dom';
+import queryString from 'query-string';
+import { getGenres } from '../services/genreService';
+import { isLogin } from '../services/authService';
 import Table from './Table';
+// Not working properly
+// import { usePopper } from 'react-popper';
 
-function Genre() {
+function Genres() {
   const history = useHistory()
   const [genreData, setGenreData] = useState([])
   const [loading, setloading] = useState(0)
@@ -14,6 +16,13 @@ function Genre() {
     name: '',
     order: ''
   })
+
+//   const [referenceElement, setReferenceElement] = useState(null);
+//   const [popperElement, setPopperElement] = useState(null);
+//   const [arrowElement, setArrowElement] = useState(null);
+//   const {styles, attributes} = usePopper(referenceElement, popperElement, {
+//       modifiers: [{ name: 'arrow', options: {element: arrowElement} }],
+//   });
 
   const columns = [
     { id: 1, name: 'name', label: 'Genre' }
@@ -27,7 +36,6 @@ function Genre() {
         setloading(1)
       })
   }, [])
-
   const handleAuth = () => {
     isLogin() ? history.push('/genres/new') : history.push('/userlogin')
   }
@@ -51,15 +59,21 @@ function Genre() {
     <div>
       <div className="container">
         <div className="row">
-          <div className="col-md-2">
+          <div className="col-md-12">
             {isLogin() ?
-              <button className="btn btn-info mt-3" onClick={handleAuth}>Add Genre</button> : ''
+              <button className="mt-3 btn btn-block btn-info" onClick={handleAuth}>Add Genre</button> : ''
             }
           </div>
-          <div className="col-md-10">
-            <h1 className="text-center">List of Genres</h1>
-            <Link to="/movies"><button className="btn btn-info btn-block">Back to Movies</button></Link>
+          <div className="col-md-12">
+            <h1 className="mt-3 text-center text-info">Genres List</h1>
+            <Link to="/movies"><button className="mt-3 btn btn-info btn-block">Back to Movies</button></Link>
+            <ul>
+            </ul>
 
+            {/* Not working properly
+            <div ref={setPopperElement} style={styles.popper} {...attributes.popper}> Popper element
+            <div ref={setArrowElement} style={styles.arrow} />
+            </div> */}
             {loading
               ? (
                 <table class="table table-dark text-center">
@@ -90,4 +104,4 @@ function Genre() {
   )
 }
 
-export default Genre
+export default Genres;

@@ -1,8 +1,6 @@
 import axios from 'axios';
 
 export const getMovies = queryParams => {
-  console.log(process.env.REACT_APP_API_URL)
-  // ${ queryParams ? `?${queryParams}` : '' }
   const url = `${process.env.REACT_APP_API_URL}/movies${queryParams ? '?' + queryParams : ''}`;
   return axios.get(url);
 }

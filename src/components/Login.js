@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { Spinner, Button } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
 import { login } from '../services/authService';
+import { Spinner, Button } from 'react-bootstrap';
 import Input from './Input';
 
 function Login() {
-  const history = useHistory()
-
   const [data, setData] = useState({
     email: '',
     password: ''
@@ -21,10 +18,10 @@ function Login() {
   const validator = () => {
     const errors = {}
     if (!data.email) {
-      errors['email'] = "Email is Required"
+      errors['email'] = "Email Address Required"
     }
     if (!data.password) {
-      errors['password'] = "Password is Required"
+      errors['password'] = "Password Required"
     }
     return Object.keys(errors).length === 0 ? null : errors
   }
@@ -42,7 +39,6 @@ function Login() {
         })
         .catch(ex => {
           setErrors({ ...errors, server: ex.response.data })
-          console.log(ex.response.data)
         })
     }
   }
@@ -51,8 +47,8 @@ function Login() {
       <div className="container">
         <div className="row">
           <div className="col-md-2"></div>
-          <div className="col-md-6">
-            <h1 className="text-center text-info">Login</h1>
+          <div className="col-md-8">
+            <h1 className="mt-3 text-center text-info">Login</h1>
             {errors.server ? <div class="alert alert-danger text-center" role="alert">
               {errors.server}
             </div> : ''
@@ -61,7 +57,7 @@ function Login() {
               <Input
                 label="Email"
                 id="email"
-                placeholder="Enter your email"
+                placeholder="Enter Email Address"
                 name="email"
                 value={data.email}
                 onChange={handleChange}
@@ -71,7 +67,7 @@ function Login() {
                 label="Password"
                 id="password"
                 type="password"
-                placeholder="Enter password "
+                placeholder="Enter Password"
                 name="password"
                 error={errors.password}
                 onChange={handleChange}
@@ -79,14 +75,9 @@ function Login() {
                 className={errors.password ? "form-control border border-danger" : "form-control"} />
               {loading
                 ? <Button variant="primary" disabled>
-                  <Spinner
-                    as="span"
-                    animation="grow"
-                    size="sm"
-                    role="status"
-                    aria-hidden="true"
-                  />Signing In...
-                </Button> : <input type="submit" className="form-control" class="btn btn-info btn-block" />}
+                  <Spinner as="span" animation="grow"
+                    size="sm" role="status" aria-hidden="true" />Signing In...
+                </Button> : <input type="submit" className="form-control" class="btn btn-info btn-block"/>}
             </form>
           </div>
         </div>

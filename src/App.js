@@ -2,7 +2,8 @@ import './App.css';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Movies from './components/Movies';
-import Genre from './components/Genre';
+import Genres from './components/Genres';
+// import Genre from './components/Genre.jsk';
 import Register from './components/Register';
 import GenreForm from './components/GenreForm';
 import PrivateRoute from './components/PrivateRoute';
@@ -16,11 +17,12 @@ function App() {
         <Navbar />
         <Switch>
           <Route path={["/", "/movies"]} exact component={Movies} />
-          <Route path="/genres" exact component={Genre} />
+          <Route path="/genres" exact component={Genres} />
+          {/* <Route path="/genre" exact component={Genre} /> */}
           <Route path="/register" component={Register} />
           <Route path="/loginuser" component={Login} />
           <PrivateRoute path="/genres/:id" component={GenreForm} />
-          <Route path="/movie/details/:id" component={MoviesDetails} />
+          <Route path="/movies/details/:id" component={MoviesDetails} />
         </Switch>
       </Router>
     </div>

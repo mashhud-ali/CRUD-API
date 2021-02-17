@@ -6,7 +6,6 @@ export const register = credentials => {
 }
 
 export const login = credentials => {
-  console.log(process.env, 'process.env')
   return axios.post(`${process.env.REACT_APP_API_URL}/auth`, credentials);
 }
 

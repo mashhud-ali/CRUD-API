@@ -51,4 +51,4 @@ function MoviesDetails() {
   )
 }
 
-export default MoviesDetails
+export default MoviesDetails;

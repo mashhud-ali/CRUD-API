@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { useHistory, useParams } from "react-router-dom"
-import { BeatLoader } from "react-spinners"
-import { addGenre, getSingleGenre, updateGenre } from "../services/genreService"
-import Input from './Input'
+import React, { useState, useEffect } from 'react';
+import { useHistory, useParams } from "react-router-dom";
+import { BeatLoader } from "react-spinners";
+import { addGenre, getSingleGenre, updateGenre } from "../services/genreService";
+import Input from './Input';
 
 function AddGenre() {
   const { id } = useParams()
@@ -16,7 +16,7 @@ function AddGenre() {
   const validator = () => {
     const errors = {}
     if (!data.name) {
-      errors['name'] = "Genre Name is Required"
+      errors['name'] = "Genre Required!"
     }
     return Object.keys(errors).length === 0 ? null : errors;
   }
@@ -60,7 +60,7 @@ function AddGenre() {
             setloading(0)
             history.push('/genres')
           }).catch(err => {
-            seterror({ ...error, serverError: err.response.data })
+            seterror({ ...error, serverError: err.response.data})
             setloading(0)
           })
       }
@@ -72,8 +72,8 @@ function AddGenre() {
       <div className="container">
         <div className="row">
           <div className="col-md-2"></div>
-          <div className="col-md-6">
-            <h1 className="text-center">{id === 'new' ? 'Add Genres' : 'Update Genre'}</h1>
+          <div className="col-md-12">
+            <h1 className="mt-3 text-center text-info">{id === 'new' ? 'Add Genre' : 'Update Genre'}</h1>
             {error.serverError
               ? (<div class="alert alert-danger text-center" role="alert">
                 {error.serverError}
@@ -84,14 +84,14 @@ function AddGenre() {
                 label="Genre Name"
                 id="name"
                 name="name"
-                placeholder="Enter Genre"
+                placeholder="Enter Genre Name"
                 value={data.name}
                 onChange={handleChange}
                 error={error.name}
                 className={error.name ? "form-control border border-danger" : "form-control"} />
               {loading
-                ? <BeatLoader />
-                : (<input type="submit" className="form-control" class="btn btn-info w-25" />)
+                ? <BeatLoader/>
+                : (<input type="submit" className="form-control" class="btn btn-block btn-info"/>)
               }
             </form>
           </div>
@@ -101,4 +101,4 @@ function AddGenre() {
   )
 }
 
-export default AddGenre
+export default AddGenre;

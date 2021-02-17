@@ -49,7 +49,7 @@ function Register() {
         <div className="row">
           <div className="col-md-2"></div>
           <div className="col-md-6">
-            <h2 className="text-center text-primary">Register User</h2>
+            <h2 className="mt-3 text-center text-primary">Register User</h2>
             {errors.serverError
               ? (<div class="alert alert-info text-center" role="alert">
                 {errors.serverError}
@@ -92,7 +92,7 @@ function Register() {
           </div>
         </div>
       </div>
-    </div >
+    </div>
   )
 }
 
