@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { register } from '../services/authService';
 import Input from './Input';
+// import { Redirect } from 'react-router';
 
 function Register() {
   const [data, setData] = useState({
@@ -13,6 +15,8 @@ function Register() {
   const changeHandler = ({ target: input }) => {
     setData({ ...data, [input.name]: input.value })
   }
+
+  const history = useHistory ();
 
   const validator = () => {
     const errors = {}
@@ -35,13 +39,20 @@ function Register() {
     if (!errors) {
       register(data)
         .then(res => {
-          console.log(res);
+          console.log(res,'response');
           res.data.token && localStorage.setItem(res.data.token);
+          // return <Redirect to="/loginuser"/>
+          // window.location.href = '/loginuser'
+          history.push('/loginuser');
         }).catch(ex => {
           setErrors({ ...errors, serverError: ex.response.data })
         })
     }
   }
+
+  // const onNavigateHome = () => {
+  //   return <Redirect to="/" />;
+  // }
 
   return (
     <div>
@@ -49,7 +60,7 @@ function Register() {
         <div className="row">
           <div className="col-md-2"></div>
           <div className="col-md-6">
-            <h2 className="mt-3 text-center text-primary">Register User</h2>
+            <h2 className="mt-3 text-center text-info">Register User</h2>
             {errors.serverError
               ? (<div class="alert alert-info text-center" role="alert">
                 {errors.serverError}
@@ -60,20 +71,21 @@ function Register() {
                 label="Name"
                 id="name"
                 name="name"
-                value={data.name}
+                value={data.name.trim()}
                 onChange={changeHandler}
                 className={errors.name ? "border border-danger form-control" : "form-control"}
                 error={errors.name}
-                placeholder="Enter Your Name"/>
+                placeholder="Enter Your Name"/>onSubmit
+                onSubmit
 
               <Input
                 label="Email ID"
                 id="email"
                 name="email"
                 type="email"
-                value={data.email}
-                className={errors.email ? "border border-danger form-control" : "form-control"}
+                value={data.email.trim()}
                 onChange={changeHandler}
+                className={errors.email ? "border border-danger form-control" : "form-control"}
                 error={errors.email}
                 placeholder="Enter Email Address"/>
 
@@ -88,6 +100,7 @@ function Register() {
                 error={errors.password}
                 placeholder="Password" />
               <button type="submit" class="btn btn-info btn-block">Submit</button>
+              {/* <button type="submit" handleSubmit={ () => history.push('/loginuser') } class="btn btn-info btn-block">Submit</button> */}
             </form>
           </div>
         </div>

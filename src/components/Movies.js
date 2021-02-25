@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import Skeleton from 'react-loading-skeleton';
 import { PencilSquare, FileEarmarkRichtext, Trash } from 'react-bootstrap-icons';
 import { deleteMovie, getMovies } from '../services/movieService';
@@ -8,19 +8,25 @@ import Table from './Table';
 import queryString from 'query-string';
 import Pagination from './Pagination';
 
-function Movies(props) {
+function Movies() {
   const [moviesData, setMoviesData] = useState([])
   const [loading, setloading] = useState(0)
-  const [sortColumn, setSortColumn] = useState({
-    name: '',
-    order: ''
-  });
+  // const [sortColumn, setSortColumn] = useState({
+  //   name: '',
+  //   order: ''
+  // });
 
+  //Sending Parameters in URL
+  const { sortBy, sortOrder, page } = queryString.parse(window.location.search);
+  console.log( { sortBy, sortOrder, page })
+
+  const history = useHistory();
   const [totalMovies, setTotalMovies] = useState(0);
   const [filters, setFilters] = useState({
-    sortBy: '',
-    sortOrder: '',
-    page: 1,
+    //comparing and sorting accordingly if the parameters are found after parsing it
+    sortBy: sortBy || '',
+    sortOrder: sortOrder || '',
+    page: page ? +page : 1,
     limit: 5,
   });
 
@@ -43,9 +49,13 @@ function Movies(props) {
       })
   }, [filters])
 
-  const handleSort = newSortColumn => {
-    setFilters({ ...filters, sortBy: newSortColumn.name, sortOrder: newSortColumn.order })
-    setSortColumn(newSortColumn);
+  const handleSort = ({ name, order }) => {
+    //anything that will be returned by queryString will be assigned to oldParams
+    const oldParams = queryString.parse(window.location.search);
+    const searchParams = queryString.stringify({ ...oldParams, sortBy: name, sortOrder: order })
+    history.push(`/movies?${searchParams}`);
+    setFilters({ ...filters, sortBy: name, sortOrder: order })
+    // setSortColumn(newSortColumn);
   }
   const handleDelete = (id) => {
     deleteMovie(id).then(
@@ -59,6 +69,9 @@ function Movies(props) {
   }
 
   const handlePageChange = number => {
+    const oldParams = queryString.parse(window.location.search);
+    const searchParams = queryString.stringify({ ...oldParams, page: number })
+    history.push(`/movies?${searchParams}`);
     setFilters({ ...filters, page: number });
   }
 
@@ -75,7 +88,7 @@ function Movies(props) {
               ? (<table class="table table-dark align-middle vertical-align">
                 <Table
                   columns={columns}
-                  sortColumn={sortColumn}
+                  sortColumn={{ name: filters.sortBy, order: filters.sortOrder}}
                   onSort={handleSort}
                 />
                 <tbody>

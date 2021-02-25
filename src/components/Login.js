@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { login } from '../services/authService';
 import { Spinner, Button } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 import Input from './Input';
+// import { Link } from 'react-router-dom';
 
 function Login() {
   const [data, setData] = useState({
@@ -10,10 +12,10 @@ function Login() {
   })
   const [loading, setLoading] = useState(0)
   const [errors, setErrors] = useState({})
-
   const handleChange = ({ target: input }) => {
     setData({ ...data, [input.name]: input.value })
   }
+  const history = useHistory ();
 
   const validator = () => {
     const errors = {}
@@ -34,7 +36,8 @@ function Login() {
       login(data)
         .then(res => {
           setLoading(1)
-          localStorage.setItem('token', JSON.stringify(res.data))
+          localStorage.setItem('token', JSON.stringify(res.data));
+          // history.push('/');
           window.location.href = '/'
         })
         .catch(ex => {
